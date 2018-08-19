@@ -8,9 +8,9 @@ const passport = require('passport')
 
 
 // load register validation
-const validateRegisterInput = require('../../validation/register')
+const validateRegisterInput = require('../../validation/register');
 // load login validation
-const validateLoginInput = require('../../validation/login')
+const validateLoginInput = require('../../validation/login');
 
 const User = require('../../models/User');
 
@@ -57,7 +57,7 @@ router.post('/register', (req, res) => {
         });
       });
     }
-  });
+  }).catch(e => console.log(e))
 });
 
 // @route POST api/users/login
@@ -105,7 +105,7 @@ router.post('/login', (req, res) => {
         return res.status(400).json(errors);
       }
     });
-  });
+  }).catch(e => console.log(e))
 });
 
 // @route POST api/users/current
@@ -113,10 +113,11 @@ router.post('/login', (req, res) => {
 // @access private
 
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+  console.log(req.user)
   const {_id, name, email} = req.user
   res.json({
     name,
-    email,
+    email, 
     id: _id
   })
 })
