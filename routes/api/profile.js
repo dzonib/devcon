@@ -5,23 +5,108 @@ const passport = require('passport');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const router = express.Router();
-const validateProfileInput = require('../../validation/profile')
+const validateProfileInput = require('../../validation/profile');
 
+// Get all profiles
+
+router.get('/all', async (req, res) => {
+  const errors = {}
+  try {
+    const profiles = await Profile.find().populate('user', [
+      'name',
+      'avatar'
+    ]);
+
+    if (!profiles) {
+      errors.profile = 'There is no profile for this user';
+      res.status(404).json(errors)
+    }
+
+    res.json(profiles)
+  } catch (e) {
+    errors.profile = 'There is no profile for this user';
+    return res.status(404).json(errors);
+
+  }
+});
+
+// get by handle
+
+router.get('/handle/:handle', async (req, res) => {
+  const errors = {};
+
+  try {
+    const profile = await Profile.findOne({
+      handle: req.params.handle
+    }).populate('user', ['name', 'avatar']);
+
+    if (!profile) {
+      errors.profile = 'There is no profile for this user';
+      return res.status(404).json(errors);
+    }
+
+    res.json(profile);
+  } catch (e) {
+    console.log(`ERROR --> ${e}`);
+    res.status(404).json(errors);
+  }
+
+  // Profile.findOne({handle: req.params.handle})
+  //   .populate('user', ['name', 'avatar'])
+  //   .then(profile => {
+  //     if (!profile) {
+  //       errors.profile = 'There is no ...spoon... wait... no profile'
+  //       res.status(404).json(errors)
+  //     }
+  //     res.json(profile)
+  //   }).catch(e => res.status(400).json(errors))
+});
+
+// get user profile by id
+
+router.get('/user/:user_id', async (req, res) => {
+  const errors = {};
+
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate('user', ['name', 'avatar']);
+
+    if (!profile) {
+      errors.profile = 'There is no profile for this user';
+      return res.status(404).json(errors);
+    }
+
+    res.json(profile);
+  } catch (e) {
+    console.log(`ERROR --> ${e}`);
+    res.status(404).json({ profile: 'There is no profile for this user' });
+  }
+
+  // Profile.findOne({handle: req.params.handle})
+  //   .populate('user', ['name', 'avatar'])
+  //   .then(profile => {
+  //     if (!profile) {
+  //       errors.profile = 'There is no ...spoon... wait... no profile'
+  //       res.status(404).json(errors)
+  //     }
+  //     res.json(profile)
+  //   }).catch(e => res.status(400).json(errors))
+});
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     const errors = {};
-    let userProfile = '';
     try {
-      userProfile = await Profile.findOne({ user: req.user.id });
+      const userProfile = await Profile.findOne({ user: req.user.id });
+
+      if (!userProfile) {
+        errors.noprofile = 'There is no profile for this user';
+        return res.status(404).json(errors);
+      }
     } catch (e) {
       console.log(`ERROR --> ${e}`);
-    }
-
-    if (!userProfile) {
-      errors.noprofile = 'There is no profile for this user';
-      return res.status(404).json(errors);
     }
 
     res.json(profile);
@@ -33,12 +118,11 @@ router.get(
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-
-    const {errors, isValid} = validateProfileInput(req.body);
+  (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
 
     if (!isValid) {
-      return res.status(400).json(errors)
+      return res.status(400).json(errors);
     }
 
     const {
@@ -99,7 +183,7 @@ router.post(
           // Save profile
           new Profile(profileFields).save().then(profile => res.json(profile));
         });
-      } 
+      }
     });
   }
 );
