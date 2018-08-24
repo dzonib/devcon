@@ -29,7 +29,7 @@ require('./config/passport')(passport)
 
 app.use('/api/users', users);
 app.use('/api/profile', profile);
-app.use('/routes/api/posts', posts);
+app.use('/api/posts', posts);
 
 app.get('/', (req, res) => {
   res.send('hi');
