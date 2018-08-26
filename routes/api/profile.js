@@ -312,13 +312,32 @@ router.delete('/experience/:exp_id', passport.authenticate('jwt', {session: fals
         .map(item => item.id)
         .indexOf(req.params.exp_id);
 
-      profile
+      const newExperience = profile
         .experience
-        .splice(removeIndex, 1);
-      profile
+        .filter(item => {
+          return item.id != req.params.exp_id
+        })
+ 
+        profile.experience = newExperience;
+
+        profile
         .save()
-        .then(profile => res.json(profile))
+        .then(profile => {
+          res.json(profile)
+        })
         .catch(e => res.status(404).json(e))
+
+      // profile
+      //   .save()
+      //   .then(profile => {
+      //     res.json(profile)
+      //   })
+      //   .catch(e => res.status(404).json(e))  
+      //   .splice(removeIndex, 1);
+      // profile
+      //   .save()
+      //   .then(profile => res.json(profile))
+      //   .catch(e => res.status(404).json(e))
     })
 
 })
