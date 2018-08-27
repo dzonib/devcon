@@ -122,12 +122,63 @@ router.post(
 
         post.likes.splice(rmvIndex, 1);
         
-        post.save()
+        post.save().then(post => res.json(post))
         // .then after save
       })
       .catch(e => res.status(404).json({ postnotfound: 'No post found' }));
   }
 );
+
+
+// Add comment
+
+router.post('/comment/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+  const { errors, isValid } = validatePostInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+  Post.findById(req.params.id)
+    .then(post => {
+      const newComment = {
+        user: req.user.id,
+        text: req.body.text,
+        avatar: req.user.avatar
+      }
+
+      post.comments.unshift(newComment)
+
+      post.save().then(res.json(post))
+    })
+    .catch(e => res.json({errors: "post not found"}))
+})
+
+
+// Delete comment
+
+
+router.delete('/comment/:id/:comment_id', passport.authenticate('jwt', {session: false}),
+  (req, res) => {
+
+  Post.findById(req.params.id)
+    .then(post => {
+     
+
+      if(post.comments.filter(item => String(item.id) === req.params.comment_id).length === 0) {
+        return res.status(404).json({commentnotfound: 'Comment not found'})
+      }
+     
+      const postIndex = post.comments.map(item => String(item.id)).indexOf(req.params.comment_id)
+
+      post.comments.splice(postIndex, 1);
+
+      post.save().then(res.json(post))
+    })
+    .catch(e => res.status(404).json({errors: "post not found"}))
+})
+
 
 module.exports = router;
 
