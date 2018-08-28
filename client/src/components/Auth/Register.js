@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import classnames from 'classnames'
+import errorFunc from './errorFunc';
 
 class Register extends Component {
   constructor() {
@@ -19,7 +22,7 @@ class Register extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
-  onSubmitHandler(e) {
+  async onSubmitHandler(e) {
     e.preventDefault();
 
     const {name, email, password, password2} = this.state;
@@ -31,11 +34,18 @@ class Register extends Component {
       password2
     }
 
-    console.log(newUser)
+    try {
+      const res = await axios.post('/api/users/register', newUser);
+      console.log(res)
+    } catch(e) {
+      this.setState({errors: e.response.data})
+    }
   }
 
 
   render() {
+    const {email, name, password, password2} = this.state.errors;
+    console.log(this.state.errors)
     return (
       <div>
         <div className="register">
@@ -50,22 +60,28 @@ class Register extends Component {
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-lg"
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': name
+                      })}
                       placeholder="Name"
                       name="name"
                       value={this.state.name}
                       onChange={this.onChangeHandler}
                     />
+                    {errorFunc(name)}
                   </div>
                   <div className="form-group">
                     <input
                       type="email"
-                      className="form-control form-control-lg"
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': email
+                      })}
                       placeholder="Email Address"
                       name="email"
                       value={this.state.email}
                       onChange={this.onChangeHandler}
                     />
+                    {errorFunc(email)}
                     <small className="form-text text-muted">
                       This site uses Gravatar so if you want a profile image,
                       use a Gravatar email
@@ -74,22 +90,28 @@ class Register extends Component {
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-lg"
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': password2
+                      })}
                       placeholder="Password"
                       name="password"
                       value={this.state.password}
                       onChange={this.onChangeHandler}
                     />
+                    {errorFunc(password)}
                   </div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-lg"
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': password2
+                      })}
                       placeholder="Confirm Password"
                       name="password2"
                       value={this.state.password2}
                       onChange={this.onChangeHandler}
                     />
+                    {errorFunc(password2)}
                   </div>
                   <input
                     type="submit"
