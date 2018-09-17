@@ -37,20 +37,25 @@ class Register extends Component {
     }
 
     this.props.registerUser(newUser)
-
-  //   try {
-  //     const res = await axios.post('/api/users/register', newUser);
-  //     console.log(res)
-  //   } catch(e) {
-  //     this.setState({errors: e.response.data})
-  //   }
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.errors) {
+  //     this.setState({errors:nextProps.errors})
+  //   }
+  // }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps)
+   
+     return nextProps.errors && {errors: nextProps.errors}
+    
+  }
 
   render() { 
     const {email, name, password, password2} = this.state.errors;
 
-    const {user} = this.props.auth;
+    // const {user} = this.props.auth;
     return (
       <div>
         <div className="register">
@@ -134,11 +139,15 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  auth: state.auth
-})
+const mapStateToProps = ({auth, errors}) => {
+  return {
+    auth,
+    errors
+  };
+}
 
 export default connect(mapStateToProps, {registerUser})(Register);
