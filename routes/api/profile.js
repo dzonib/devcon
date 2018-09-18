@@ -19,7 +19,7 @@ router.get('/all', async(req, res) => {
       .populate('user', ['name', 'avatar']);
 
     if (!profiles) {
-      errors.profile = 'there aint any profiles';
+      errors.profile = 'there aint any profiles yo';
       res
         .status(404)
         .json(errors)
@@ -27,7 +27,7 @@ router.get('/all', async(req, res) => {
 
     res.json(profiles)
   } catch (e) {
-    errors.profile = 'there aint any profiles';
+    errors.profile = 'there aint any profiles yo';
     return res
       .status(404)
       .json(errors);
