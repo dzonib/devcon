@@ -12,10 +12,11 @@ import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import store from './redux/store';
 import './App.css';
+import Dashboard from './components/Layout/Dashboard';
 
 
 
-// not gona deleate from ls anymore
+// not gona deleate from ls anymore when refreshed
 // Check for token
 if (localStorage.jwtToken) {
 	// set the auth token header auth
@@ -24,12 +25,10 @@ if (localStorage.jwtToken) {
 	const decoded = jwt_decode(localStorage.jwtToken);
 	// set user and isAuthenticated
 	store.dispatch(setCurrentUser(decoded));
-
 	// check for expired token
 	const currentTime = Date.now() / 1000;
 
-
-	if (decoded.exp > currentTime) {
+	if (decoded.exp < currentTime) {
 		// logout user
 		store.dispatch(logoutUser());
 		//TODO: clear current profile
@@ -48,6 +47,7 @@ class App extends Component {
 						<Navbar />
 						<Route exact path="/" component={Landing} />
 						<div className="container">
+							<Route path="/dashboard" component={Dashboard} />
 							<Route path="/register" component={Register} />
 							<Route path="/login" component={Login} />
 						</div>

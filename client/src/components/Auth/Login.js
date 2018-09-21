@@ -23,7 +23,6 @@ class Login extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
-
   onSubmitHandler(e) {
     e.preventDefault();
     const {email, password} = this.state;
@@ -52,7 +51,8 @@ class Login extends Component {
   }
 
   render() {
-    const {email, password} = this.state.errors
+    const {email, password} = this.state.errors;
+    
     return (
       <div className="login">
         <div className="container">
