@@ -12,7 +12,6 @@ const Dashboard = (props) => {
     <p>Hi Mr.{props.auth.user.name}</p> : 
     <p>Login to see greeting nigga</p>
     }
-
   </div>
 }
 
