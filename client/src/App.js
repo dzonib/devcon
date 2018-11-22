@@ -16,7 +16,6 @@ import Dashboard from './components/Dashboard/Dashboard'
 import { clearCurrentProfile } from './redux/actions/profileActions';
 
 
-
 // not gona deleate from ls anymore when refreshed
 // Check for token
 if (localStorage.jwtToken) {
@@ -35,7 +34,7 @@ if (localStorage.jwtToken) {
 		// clear current profile
 		store.dispatch(clearCurrentProfile()) 
 		// redirect to login
-		window.location.href = '/login'
+		window.location.href = '/'
 	}
 }
 
