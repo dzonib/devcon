@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
 
-
 const InputGroup = ({
   name,
   placeholder,
@@ -19,15 +18,11 @@ const InputGroup = ({
     </div>
     <input
       type={type}
-      className={classnames('form-control form-control-lg', {
-          'is-invalid': error
-        })}
+      className={classnames('form-control form-control-lg', {'is-invalid': error})}
       placeholder={placeholder}
       name={name}
       value={value}
-      onChange={onChange}
-      />
-      {error && <div className='invalid-feedback'>{error}</div>}
+      onChange={onChange}/> {error && <div className='invalid-feedback'>{error}</div>}
   </div>
 }
 

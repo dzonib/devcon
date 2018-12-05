@@ -5,9 +5,10 @@ import TextFieldGroup from '../common/TextFieldGroups'
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup'
 import InputGroup from '../common/InputGroup'
 import SelectListGroup from '../common/SelectListGroup'
-import { createProfile } from '../../redux/actions/profileActions'
+import { createProfile, getCurrentProfile } from '../../redux/actions/profileActions'
+import isEmpty from '../../validation/isEmpty'
 
-class CreateProfile extends Component {
+class EditProfile extends Component {
 
   constructor(props) {
     super(props)
@@ -26,11 +27,16 @@ class CreateProfile extends Component {
       linkedin: '',
       youtube: '',
       instagram: '',
-      errors: {}
+      errors: {},
+      DONTFUCKINGUPDATEALLTHETIME: true
     }
 
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.getCurrentProfile()
   }
 
   onSubmit(e) {
@@ -60,9 +66,61 @@ class CreateProfile extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      return {errors: nextProps.errors}
+    // if (nextProps.errors) {
+    //   return {errors: nextProps.errors}
+    // }
+
+
+
+    if (nextProps.profile && prevState.DONTFUCKINGUPDATEALLTHETIME) {
+      const {profile} = nextProps
+
+      // bring skills array back to coma seperated values
+      const skillsCSV = profile.skills.join(',')
+
+      // if profile field does not exist make empty string
+      profile.company = !isEmpty(profile.company) ? profile.company : ''
+      profile.website = !isEmpty(profile.website) ? profile.website : ''
+      profile.githubusername = !isEmpty(profile.githubusername) ? profile.githubusername : ''
+      profile.bio = !isEmpty(profile.bio) ? profile.bio : ''
+      profile.social = !isEmpty(profile.social) ? profile.social : {}
+      profile.location = !isEmpty(profile.location) ? profile.location : ''
+
+      profile.twitter = !isEmpty(profile.social.twitter)
+        ? profile.social.twitter
+        : '';
+      profile.facebook = !isEmpty(profile.social.facebook)
+        ? profile.social.facebook
+        : '';
+      profile.linkedin = !isEmpty(profile.social.linkedin)
+        ? profile.social.linkedin
+        : '';
+      profile.youtube = !isEmpty(profile.social.youtube)
+        ? profile.social.youtube
+        : '';
+      profile.instagram = !isEmpty(profile.social.instagram)
+        ? profile.social.instagram
+        : '';
+
+
+        return {
+          handle: profile.handle,
+          company: profile.company,
+          website: profile.website,
+          location: profile.location,
+          status: profile.status,
+          skills: skillsCSV,
+          githubusername: profile.githubusername,
+          bio: profile.bio,
+          twitter: profile.twitter,
+          facebook: profile.facebook,
+          linkedin: profile.linkedin,
+          youtube: profile.youtube,
+          DONTFUCKINGUPDATEALLTHETIME: false
+        }
     }
+
+    return prevState
   }
 
   render() {
@@ -136,14 +194,13 @@ class CreateProfile extends Component {
       { label: 'Other', value: 'Other'},
     ]
 
-
     return (
       <div className="create-profile">
         <div className="container">
           <div className="row">
             <div className="md-8 m-auto">
               <h1 className="display-4 text-center">
-                Create Your Profile
+                Edit Your Profile
               </h1>
               <p className="lead text-center">Lets get some information to make your profile stand out</p>
               <small className="d-block pb-3">* = required fields</small>
@@ -234,6 +291,14 @@ class CreateProfile extends Component {
   }
 }
 
-const mapStateToProps = state => ({profile: state.profile, errors: state.errors})
+const mapStateToProps = state => {
+  return {
+    profile: state.profile.profile, 
+    errors: state.errors
+  }
+}
 
-export default connect(mapStateToProps, {createProfile})(withRouter(CreateProfile))
+  
+
+export default connect(mapStateToProps, 
+  {createProfile, getCurrentProfile})(withRouter(EditProfile))

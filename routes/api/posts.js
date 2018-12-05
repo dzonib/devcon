@@ -164,7 +164,6 @@ router.delete('/comment/:id/:comment_id', passport.authenticate('jwt', {session:
 
   Post.findById(req.params.id)
     .then(post => {
-     
 
       if(post.comments.filter(item => String(item.id) === req.params.comment_id).length === 0) {
         return res.status(404).json({commentnotfound: 'Comment not found'})
