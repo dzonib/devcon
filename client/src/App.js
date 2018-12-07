@@ -16,6 +16,8 @@ import Dashboard from './components/Dashboard/Dashboard'
 import {clearCurrentProfile} from './redux/actions/profileActions'
 import CreateProfile from './components/create-profile/CreateProfile'
 import EditProfile from './components/EditProfile/EditProfile'
+import AddExperience from './components/AddCredentials/AddExperience'
+import AddEducation from './components/AddCredentials/AddEducation';
 
 import PrivateRoute from './components/common/PrivateRoute'
 
@@ -57,6 +59,12 @@ class App extends Component {
 														</Switch>
 														<Switch>
 																<PrivateRoute path="/create-profile" component={CreateProfile}/>
+														</Switch>
+														<Switch>
+																<PrivateRoute path="/add-experience" component={AddExperience}/>
+														</Switch>
+														<Switch>
+																<PrivateRoute path="/add-education" component={AddEducation}/>
 														</Switch>
 														<Route path="/register" component={Register}/>
 														<Route path="/login" component={Login}/>
