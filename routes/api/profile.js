@@ -97,7 +97,8 @@ router.get('/user/:user_id', async(req, res) => {
 router.get('/', passport.authenticate('jwt', {session: false}), async(req, res) => {
   const errors = {} 
   try {
-    const userProfile = await Profile.findOne({user: req.user.id}) 
+    const userProfile = await Profile.findOne({user: req.user.id})
+    .populate('user', ['name', 'avatar']) 
 
     if (!userProfile) {
 
@@ -310,10 +311,10 @@ router.delete('/experience/:exp_id', passport.authenticate('jwt', {session: fals
     .findOne({user: req.user.id})
     .then(profile => {
 
-      const removeIndex = profile
-        .experience
-        .map(item => item.id)
-        .indexOf(req.params.exp_id) 
+      // const removeIndex = profile
+      //   .experience
+      //   .map(item => item.id)
+      //   .indexOf(req.params.exp_id) 
 
       const newExperience = profile
         .experience

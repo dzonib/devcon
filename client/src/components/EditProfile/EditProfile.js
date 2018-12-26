@@ -7,6 +7,7 @@ import InputGroup from '../common/InputGroup'
 import SelectListGroup from '../common/SelectListGroup'
 import { createProfile, getCurrentProfile } from '../../redux/actions/profileActions'
 import isEmpty from '../../validation/isEmpty'
+import {Link} from 'react-router-dom'
 
 class EditProfile extends Component {
 
@@ -198,7 +199,10 @@ class EditProfile extends Component {
       <div className="create-profile">
         <div className="container">
           <div className="row">
-            <div className="md-8 m-auto">
+            <div className="col-md-8 m-auto">
+              <Link to="/dashboard" className="btn btn-light">
+                Go Back
+              </Link>
               <h1 className="display-4 text-center">
                 Edit Your Profile
               </h1>
