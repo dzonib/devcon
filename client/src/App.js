@@ -23,6 +23,7 @@ import PrivateRoute from './components/common/PrivateRoute'
 import Profiles from './components/Profiles/Profiles'
 import Profile from './components/Profile/Profile'
 import NotFound from './components/not-found/NotFound'
+import Posts from './components/Posts/Posts';
 
 // not gona deleate from ls anymore when refreshed Check for token
 if (localStorage.jwtToken) {
@@ -72,6 +73,9 @@ class App extends Component {
 														</Switch>
 														<Switch>
 																<PrivateRoute exact path="/add-education" component={AddEducation}/>
+														</Switch>
+														<Switch>
+																<PrivateRoute exact path="/feed" component={Posts}/>
 														</Switch>
 
 														<Route path='/not-found' component={NotFound}/>
