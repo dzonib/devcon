@@ -2,12 +2,13 @@ import axios from 'axios'
 import setAuthToken from '../../utils/setAuthToken'
 import jwt_decode from 'jwt-decode'
 
-import { GET_ERRORS, SET_CURRENT_USER } from "./types"
+import { GET_ERRORS, SET_CURRENT_USER, CLEAR_ERRORS } from "./types"
 
 
 // Reg users
 export const registerUser = (userData, history) => async dispatch => {
   try {
+    dispatch({type: CLEAR_ERRORS})
     await axios.post('/api/users/register', userData)
     history.push('/login')
   } catch(e) {
@@ -20,6 +21,7 @@ export const registerUser = (userData, history) => async dispatch => {
 
 export const loginUser = (userData) => async dispatch => {
   try {
+    dispatch({type: CLEAR_ERRORS})
     const res = await axios.post('/api/users/login', userData)
 
     const {token} = res.data

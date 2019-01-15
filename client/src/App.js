@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import jwt_decode from 'jwt-decode'
 import {setCurrentUser, logoutUser} from './redux/actions/authActions'
-
 import setAuthToken from './utils/setAuthToken'
 import Navbar from './components/Layout/Navbar'
 import Footer from './components/Layout/Footer'
@@ -17,13 +16,13 @@ import {clearCurrentProfile} from './redux/actions/profileActions'
 import CreateProfile from './components/create-profile/CreateProfile'
 import EditProfile from './components/EditProfile/EditProfile'
 import AddExperience from './components/AddCredentials/AddExperience'
-import AddEducation from './components/AddCredentials/AddEducation';
-
+import AddEducation from './components/AddCredentials/AddEducation'
 import PrivateRoute from './components/common/PrivateRoute'
 import Profiles from './components/Profiles/Profiles'
 import Profile from './components/Profile/Profile'
 import NotFound from './components/not-found/NotFound'
-import Posts from './components/Posts/Posts';
+import Posts from './components/Posts/Posts'
+import Post from './components/Post/Post'
 
 // not gona deleate from ls anymore when refreshed Check for token
 if (localStorage.jwtToken) {
@@ -76,6 +75,9 @@ class App extends Component {
 														</Switch>
 														<Switch>
 																<PrivateRoute exact path="/feed" component={Posts}/>
+														</Switch>
+														<Switch>
+																<PrivateRoute exact path="/post/:id" component={Post}/>
 														</Switch>
 
 														<Route path='/not-found' component={NotFound}/>

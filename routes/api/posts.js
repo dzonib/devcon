@@ -50,7 +50,7 @@ router.post(
       name,
       avatar,
       user: req.user.id
-    }) 
+    })
 
     newPost.save().then(post => res.json(post)) 
   }

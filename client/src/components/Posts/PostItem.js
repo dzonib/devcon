@@ -1,34 +1,35 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-// import { deletePost, addLike, removeLike } from '../../redux/actions/postActions';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { deletePost, addLike, removeLike  } from '../../redux/actions/postActions'
+
 
 class PostItem extends Component {
   onDeleteClick(id) {
-    this.props.deletePost(id);
+    this.props.deletePost(id)
   }
 
   onLikeClick(id) {
-    this.props.addLike(id);
+    this.props.addLike(id)
   }
 
   onUnlikeClick(id) {
-    this.props.removeLike(id);
+    this.props.removeLike(id)
   }
 
   findUserLike(likes) {
-    const { auth } = this.props;
+    const { auth } = this.props
     if (likes.filter(like => like.user === auth.user.id).length > 0) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   }
 
   render() {
-    const { post, auth, showActions } = this.props;
+    const { post, auth, showActions } = this.props
 
     return (
       <div className="card card-body mb-3">
@@ -103,7 +104,7 @@ PostItem.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth
 });
-// , { deletePost, addLike, removeLike }
-export default connect(mapStateToProps)(
+
+export default connect(mapStateToProps, { deletePost, addLike, removeLike })(
   PostItem
-);
+)

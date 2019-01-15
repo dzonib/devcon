@@ -151,15 +151,7 @@ class EditProfile extends Component {
           <InputGroup 
             placeholder="Linkedin Profile URL"
             name="linkedin"
-            icon="fab fa-facebook"
-            value={this.state.linkedin}
-            onChange={this.onChange}
-            error={errors.linkedin}
-          />
-          <InputGroup 
-            placeholder="Linkedin Profile URL"
-            name="linkedin"
-            icon="fab fa-facebook"
+            icon="fab fa-linkedin"
             value={this.state.linkedin}
             onChange={this.onChange}
             error={errors.linkedin}
