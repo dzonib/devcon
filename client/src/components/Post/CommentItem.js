@@ -22,7 +22,7 @@ class CommentItem extends Component {
               />
             </a>
             <br />
-            <p className="text-center">{auth.user.name}</p>
+            <p className="text-center">{comment.name}</p>
           </div>
           <div className="col-md-10">
             <p className="lead">{comment.text}</p>
